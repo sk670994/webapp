@@ -1,0 +1,28 @@
+<%- include("partials/top", { title: "Dashboard", currentUser }) %>
+
+<section class="card">
+  <h1>Dashboard</h1>
+  <p>All posts are visible to logged-in users.</p>
+</section>
+
+<% if (!posts.length) { %>
+  <section class="card"><p>No posts yet. Create one from "Create Post".</p></section>
+<% } %>
+
+<% posts.forEach((post) => { %>
+  <article class="card post-card">
+    <h2><%= post.title %></h2>
+    <p><%= post.content %></p>
+    <p class="meta">Created by: <strong><%= post.authorName %></strong></p>
+    <p class="meta">Created at: <%= new Date(post.createdAt).toLocaleString() %></p>
+    <% if (post.updatedAt && String(post.updatedAt) !== String(post.createdAt)) { %>
+      <p class="meta">Updated at: <%= new Date(post.updatedAt).toLocaleString() %></p>
+    <% } %>
+
+    <% if (String(post.authorId) === String(currentUser._id)) { %>
+      <a href="/edit-post/<%= post._id %>" class="button-link">Edit</a>
+    <% } %>
+  </article>
+<% }) %>
+
+<%- include("partials/bottom") %>

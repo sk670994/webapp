@@ -1,0 +1,22 @@
+<%- include("partials/top", { title: "Signup", currentUser }) %>
+
+<section class="card auth-card">
+  <h1>Signup</h1>
+  <% if (error) { %><p class="error"><%= error %></p><% } %>
+
+  <form action="/signup" method="POST" class="form">
+    <label>Name</label>
+    <input type="text" name="name" value="<%= form.name || '' %>" required />
+
+    <label>Email</label>
+    <input type="email" name="email" value="<%= form.email || '' %>" required />
+
+    <label>Password</label>
+    <input type="password" name="password" required />
+
+    <button type="submit">Create Account</button>
+  </form>
+  <p>Already have an account? <a href="/login">Login</a></p>
+</section>
+
+<%- include("partials/bottom") %>

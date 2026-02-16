@@ -1,0 +1,39 @@
+<%- include("partials/top", { title: "Admin Panel", currentUser }) %>
+
+<section class="card">
+  <h1>Admin Panel</h1>
+  <p>Admins can view and delete any post.</p>
+  <% if (posts.length) { %>
+    <form action="/admin/posts?_method=DELETE" method="POST">
+      <button
+        type="submit"
+        class="danger"
+        onclick="return confirm('Delete all posts? This cannot be undone.')"
+      >
+        Delete All Posts
+      </button>
+    </form>
+  <% } %>
+</section>
+
+<% if (!posts.length) { %>
+  <section class="card"><p>No posts found.</p></section>
+<% } %>
+
+<% posts.forEach((post) => { %>
+  <article class="card post-card">
+    <h2><%= post.title %></h2>
+    <p><%= post.content %></p>
+    <p class="meta">Created by: <strong><%= post.authorName %></strong></p>
+    <p class="meta">Created at: <%= new Date(post.createdAt).toLocaleString() %></p>
+    <% if (post.updatedAt && String(post.updatedAt) !== String(post.createdAt)) { %>
+      <p class="meta">Updated at: <%= new Date(post.updatedAt).toLocaleString() %></p>
+    <% } %>
+
+    <form action="/posts/<%= post._id %>?_method=DELETE" method="POST">
+      <button type="submit" class="danger">Delete Post</button>
+    </form>
+  </article>
+<% }) %>
+
+<%- include("partials/bottom") %>
