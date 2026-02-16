@@ -13,6 +13,7 @@ const { requireAuth, requireAdmin, attachUserIfLoggedIn } = require("./middlewar
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+let dbConnectPromise = null;
 
 if (!process.env.JWT_SECRET) {
   throw new Error("JWT_SECRET is required in .env");
@@ -21,13 +22,26 @@ if (!process.env.MONGO_URI) {
   throw new Error("MONGO_URI is required in .env");
 }
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => {
+const connectToDatabase = async () => {
+  if (mongoose.connection.readyState === 1) return;
+  if (!dbConnectPromise) {
+    dbConnectPromise = mongoose.connect(process.env.MONGO_URI).catch((err) => {
+      dbConnectPromise = null;
+      throw err;
+    });
+  }
+  await dbConnectPromise;
+};
+
+app.use(async (req, res, next) => {
+  try {
+    await connectToDatabase();
+    next();
+  } catch (err) {
     console.error("Mongo connection error:", err.message);
-    process.exit(1);
-  });
+    res.status(500).send("Database connection failed");
+  }
+});
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -383,8 +397,12 @@ app.use((req, res) => {
   res.status(404).send("Page not found");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
 
 
