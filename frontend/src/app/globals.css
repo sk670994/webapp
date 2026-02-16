@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+:root {
+  --bg-a: #f5efe2;
+  --bg-b: #e8f0ff;
+  --surface: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-manrope), sans-serif;
+  color: #0f172a;
+  min-height: 100vh;
+  background: linear-gradient(140deg, var(--bg-a), var(--bg-b));
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-fraunces), serif;
+}
+
+.bg-orbs::before,
+.bg-orbs::after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  border-radius: 999px;
+  filter: blur(8px);
+}
+
+.bg-orbs::before {
+  width: 340px;
+  height: 340px;
+  top: -130px;
+  right: -120px;
+  background: rgba(2, 132, 199, 0.18);
+}
+
+.bg-orbs::after {
+  width: 360px;
+  height: 360px;
+  left: -140px;
+  bottom: -120px;
+  background: rgba(13, 148, 136, 0.18);
+}
+
+.panel {
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+  border-radius: 16px;
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.1);
+}
+
+.input,
+.textarea {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  padding: 10px 12px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: #0d9488;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2);
+}
+
+.btn {
+  border: 0;
+  border-radius: 12px;
+  background: #0f766e;
+  color: #fff;
+  font-weight: 700;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #115e59;
+}
+
+.btn-danger {
+  background: #be123c;
+}
+
+.btn-danger:hover {
+  background: #9f1239;
+}
